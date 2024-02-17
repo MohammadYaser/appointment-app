@@ -1,14 +1,5 @@
 Rails.application.routes.draw do
-  mount Rswag::Ui::Engine => '/api-docs'
-  mount Rswag::Api::Engine => '/api-docs'
-  devise_for :users, defaults: { format: :json }
-
-  namespace :api, defaults: {format: :json} do
-    namespace :v1 do
-      resources :engineers, except: [:new, :edit, :update]
-      resources :consultations, only: [:index, :create, :destroy]
-    end
-  end
+  
 
   get "home" => "home#home"
   root "home#home"
