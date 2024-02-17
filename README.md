@@ -139,11 +139,15 @@ to run tests:
 - GitHub: [@erickma1](https://github.com/erickma1)
 - LinkedIn: [LinkedIn](https://www.linkedin.com/in/eric-mawudeku-55b74883/)
 
-👤 **Mohamed Sabry**
+👤 **Noel Bryant**
 
-- GitHub: [@mohamedSabry0](https://github.com/mohamedSabry0)
-- Twitter: [@mohsmh0](https://twitter.com/mohsmh0)
-- LinkedIn: [LinkedIn](https://www.linkedin.com/in/mohamed-sabry0/)
+- GitHub: [@githubhandle](https://github.com/NoelLincoln)
+- Twitter: [@twitterhandle](https://twitter.com/NoelLincoln)
+- LinkedIn: [LinkedIn](https://www.linkedin.com/in/noel-bryant/)
+
+👤 **Samiullah Tufail**
+
+- GitHub: [@sami](sami.u.tufail)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
