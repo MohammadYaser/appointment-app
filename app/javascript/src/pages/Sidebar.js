@@ -9,7 +9,10 @@ const Sidebar = () => {
     setIsMenuClicked(!isMenuClicked);
     navRef.current.classList.toggle('responsive_menu');
   };
-  
+  const hideSidebar = () => {
+    setIsMenuClicked(!isMenuClicked);
+    navRef.current.classList.toggle('responsive_menu');
+  };
 
   return (
     <>
