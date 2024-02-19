@@ -5,7 +5,11 @@ import logo1 from '../images/logo1.png';
 const Sidebar = () => {
   const [isMenuClicked, setIsMenuClicked] = useState(true);
   const navRef = useRef();
-
+  const showSidebar = () => {
+    setIsMenuClicked(!isMenuClicked);
+    navRef.current.classList.toggle('responsive_menu');
+  };
+  
 
   return (
     <>
