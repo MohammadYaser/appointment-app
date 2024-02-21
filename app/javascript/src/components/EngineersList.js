@@ -5,7 +5,6 @@ import { fetchEngineers, engineersState } from '../redux/engineers/engineersSlic
 function EngineersList() {
   const dispatch = useDispatch();
   const { engineers, error, status } = useSelector(engineersState);
-  console.log('engineers', engineers);
   useEffect(() => {
     if (status === 'idle') {
       dispatch(fetchEngineers());
