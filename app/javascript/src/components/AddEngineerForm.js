@@ -28,7 +28,7 @@ const AddEngineerForm = () => {
         body: JSON.stringify({
           name,
           photo,
-          consultancy_fee,
+          consultancyFee,
           speciality,
           about,
         }),
@@ -55,13 +55,13 @@ const AddEngineerForm = () => {
   return (
     <div className="container">
       <div className="row justify-content-center mt-5">
-        <div className="col-lg-6">
-          <form onSubmit={handleSubmit}>
+        <div className="col-sm-8">
+          <form onSubmit={handleSubmit} style={{ width: '80%' }}>
             <div className="mb-3">
-              <label htmlFor="name" className="form-label">Name</label>
               <input
                 type="text"
                 className="form-control"
+                placeholder="Name"
                 id="name"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
@@ -69,42 +69,43 @@ const AddEngineerForm = () => {
               />
             </div>
             <div className="mb-3">
-              <label htmlFor="photo" className="form-label">Photo URL</label>
               <input
                 type="url"
                 className="form-control"
-                id="photoUrl"
+                id="photo"
+                placeholder="Photo Url"
                 value={photo}
                 onChange={(e) => setPhotoUrl(e.target.value)}
                 required
               />
             </div>
             <div className="mb-3">
-              <label htmlFor="consultancy_fee" className="form-label">Consultation Fee</label>
               <input
                 type="number"
                 className="form-control"
-                id="consultancy_fee" // Changed from consultationFee to consultancyFee
-                value={consultancyFee} // Changed from consultationFee to consultancyFee
+                placeholder="Consultancy fee"
+                id="consultancy_fee"
+                value={consultancyFee}
                 onChange={(e) => setConsultancyFee(e.target.value)}
                 required
               />
             </div>
             <div className="mb-3">
-              <label htmlFor="speciality" className="form-label">Specialty</label>
               <input
                 type="text"
                 className="form-control"
                 id="speciality"
+                placeholder="Speciality"
                 value={speciality}
                 onChange={(e) => setSpecialty(e.target.value)}
                 required
               />
             </div>
             <div className="mb-3">
-              <label htmlFor="about" className="form-label">About</label>
+              {' '}
               <textarea
                 className="form-control"
+                placeholder="About"
                 id="about"
                 value={about}
                 onChange={(e) => setAbout(e.target.value)}
