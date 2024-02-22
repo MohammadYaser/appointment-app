@@ -1,17 +1,23 @@
 class Api::V1::ConsultationsController < ApplicationController
+  skip_before_action :verify_authenticity_token, only: %i[create]
+
   def index
-    @consultations = Consultation.select(:id, :user_id, :engineer_id, :city, :date).all
+    @consultations = current_user.consultations.includes(:user, :engineer).select(:id, :user_id, :engineer_id, :city,
+                                                                                  :date).all
     if @consultations.empty?
       render json: { message: 'No consultations found' }
     else
-      render json: @consultations
+      consultations_data = @consultations.map do |consultation|
+       
+      end
+      render json: { data: consultations_data }
     end
   end
 
   def create
     @consultation = Consultation.new(consultation_params)
     if @consultation.save
-      render json: @consultation
+      render json: { data: @consultation }, status: :created
     else
       render json: { error: 'Unable to create consultation' }
     end
@@ -24,5 +30,11 @@ class Api::V1::ConsultationsController < ApplicationController
     else
       render json: { error: 'Unable to delete consultation' }
     end
+  end
+
+  private
+
+  def consultation_params
+    params.require(:consultation).permit(:user_id, :engineer_id, :date, :city)
   end
 end
