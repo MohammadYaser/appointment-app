@@ -11,7 +11,6 @@
 ## 📗 Table of Contents
 
 - [📖 Appointments App ](#-appointments-app-)
-  - [📺 Live Demo ](#-live-demo-)
   - [🛠 Built With ](#-built-with-)
     - [Tech Stack ](#tech-stack-)
     - [Key Features ](#key-features-)
@@ -20,6 +19,7 @@
     - [Setup](#setup)
     - [Install](#install)
     - [Usage](#usage)
+  - [Kanban Board ](#kanban-board-)
   - [👥 Authors ](#-authors-)
   - [🔭 Future Features ](#-future-features-)
   - [🤝 Contributing ](#-contributing-)
@@ -31,11 +31,7 @@
 
 # 📖 Appointments App <a name="about-project"></a>
 
-This is the Appointments App, a web application built with Ruby on Rails, PostgreSQL, JavaScript, React, and Redux. It allows users to manage appointments and schedule appointments with service providers.
-
-## 📺 Live Demo <a name="live-demo"></a>
-
-...
+This is the Appointments App, a web application built with Ruby on Rails, PostgreSQL, JavaScript, React, and Redux. It allows users to manage appointments and schedule appointments with engineers.
 
 ## 🛠 Built With <a name="built-with"></a>
 
@@ -100,12 +96,23 @@ Install this project with:
   yarn install
 ```
 
+You will need to follow these steps to have your own set of related project secrets:
+
+- delete `config/credentials.yml.enc` file
+- use this command `EDITOR="code --wait" bin/rails credentials:edit`
+- under `secret_base_key` add this line `devise_jwt_secret_key:`
+- in another terminal run `bundle exec rails secret`
+- take the output and use it as value for `devise_jwt_secret_key`
+- save the file and close it
+
 it will install the required gemfile for running the project
 
 run the following commands to create and migrate:
 
 ```bash
-  rails db:prepare
+  rails db:create
+  rails db:migrate
+  rails db:seed
 ```
 
 ### Usage
@@ -121,10 +128,23 @@ it will run the the server on `localhost:3000`
 to run tests:
 
 ```sh
-   rspec
+   rspec --format doc
 ```
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+<!-- KANBAN BOARD -->
+
+## Kanban Board <a name="kanban-board"></a>
+
+- [Project Board](https://github.com/users/MohammadYaser/projects/3/views/1)
+- ![Project Board](![image](https://github.com/MohammadYaser/appointment-app/assets/134836471/07aedaa8-c090-4721-bb31-b686d1ddee5b)
+)
+
+- Our team consists of 3 members:
+  [@erickma1](https://github.com/erickma1),
+  [@MohammadYaser](https://github.com/MohammadYaser),
+  [@mohamedSabry0](https://github.com/mohamedSabry0)
 
 ## 👥 Authors <a name="author"></a>
 
@@ -148,6 +168,7 @@ to run tests:
 👤 **Samiullah Tufail**
 
 - GitHub: [@sami](sami.u.tufail)
+
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
