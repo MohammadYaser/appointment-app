@@ -36,7 +36,7 @@ RSpec.describe 'api/v1/consultations', type: :request do
         required: %w[date time user_id engineer_id]
       }
 
-      response(200, 'successful') do
+      response(201, 'successful') do
         let(:consultation) { create(:consultation, user_id: user.id, engineer_id: engineer.id) }
         after do |example|
           example.metadata[:response][:content] = {
