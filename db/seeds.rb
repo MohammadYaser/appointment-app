@@ -9,8 +9,15 @@
 #   end
 
 5.times do
-  User.create(username: Faker::Internet.username)
+  user = User.new(
+    username: Faker::Internet.username,
+    email: Faker::Internet.email,
+    password: Faker::Internet.password(min_length: 8)
+  )
+  user.skip_confirmation!
+  user.save!
 end
+
 
 10.times do
   Engineer.create(
