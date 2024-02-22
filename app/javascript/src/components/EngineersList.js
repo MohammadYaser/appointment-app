@@ -1,72 +1,159 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { fetchEngineers, engineersState } from '../redux/engineers/engineersSlice';
+import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
-function EngineersList() {
+import {
+  fetchEngineers,
+  deleteEngineer,
+  engineersState,
+} from '../redux/engineers/engineersSlice';
+
+function EngineersList({ showDeleteButton = false }) {
   const dispatch = useDispatch();
-  const { engineers, error, status } = useSelector(engineersState);
-  const [selectedEngineer, setSelectedEngineer] = useState(null); // State to store selected engineer
-  const [isModalOpen, setIsModalOpen] = useState(false); // State to manage modal visibility
-  const [currentIndex, setCurrentIndex] = useState(0); // Index of the first engineer to display
-  const carouselRef = useRef(null);
+  const {
+    engineers, error, status, message,
+  } = useSelector(engineersState);
+  const engineersIds = engineers?.map((engineer) => engineer.id) ?? [];
+  const lastId = engineersIds.length > 0 ? engineersIds[engineers.length - 1] : 0;
+  const [showIds, setShowIds] = useState(engineersIds?.slice(0, 3));
+  const token = JSON.parse(localStorage.getItem('token'));
+
+  const handlePrevClick = (ids) => {
+    if (showIds[0] > engineersIds[0]) {
+      setShowIds(
+        engineersIds
+          .filter((id) => id < ids[0])
+          .slice(-3),
+      );
+    }
+  };
+
+  const handleNextClick = (ids) => {
+    if (ids[ids.length - 1] < lastId) {
+      setShowIds(
+        engineersIds
+          .filter((id) => id > ids[ids.length - 1])
+          .slice(0, 3),
+      );
+    }
+  };
+
+  const handleDelete = async (engineerId) => {
+    dispatch(deleteEngineer(engineerId));
+
+    const newEngineersIds = engineers.map((engineer) => engineer.id)
+      .filter((id) => id !== engineerId);
+    const beginIndex = Math.max(newEngineersIds.indexOf(showIds[0]), 0);
+    // above line is to handle the case where the first visible engineer is deleted
+
+    setShowIds(newEngineersIds.slice(beginIndex, beginIndex + 3));
+  };
 
   useEffect(() => {
     if (status === 'idle') {
-      dispatch(fetchEngineers());
+      dispatch(fetchEngineers())
+        .then((res) => {
+          if (Array.isArray(res?.payload.data)) {
+            setShowIds(res.payload.data?.map((engineer) => engineer.id)?.slice(0, 3) ?? [0, 0, 0]);
+          }
+        });
     }
-  }, [dispatch, status]);
+  }, [dispatch, status, engineers, token, error]);
 
-  const openModal = (engineer) => {
-    setSelectedEngineer(engineer);
-    const homeMain = document.querySelector('.home-main');
-    if (homeMain) {
-      homeMain.style.position = 'relative';
+  if (status === 'loading') {
+    if (status === 'loading') {
+      return <p>Loading...</p>;
     }
-    setIsModalOpen(true);
-  };
+  }
 
-  const closeModal = () => {
-    setSelectedEngineer(null);
-    setIsModalOpen(false);
-  };
+  if (status === 'failed') {
+    return <p>{error}</p>;
+  }
 
-  const handlePrevClick = () => {
-    setCurrentIndex((prevIndex) => Math.max(prevIndex - 1, 0));
-  };
-
-  const handleNextClick = () => {
-    setCurrentIndex((prevIndex) => Math.min(prevIndex + 1, engineers.length - 1));
-  };
-
-  return (
-      <div className="engineers-list w-100" style={{ overflowX: 'hidden' }}>
-        <button onClick={handlePrevClick} disabled={currentIndex === 0}>Previous</button>
-
-        <div className="carousel" ref={carouselRef} style={{ display: 'flex', flexDirection: 'row', transition: 'transform 0.5s ease' }}>
-          {engineers.slice(currentIndex, currentIndex + 3).map((engineer) => (
-              <div key={engineer.id} onClick={() => openModal(engineer)} style={{ cursor: 'pointer' }}>
-                <img className="engineer-img" src={engineer.photo} alt={engineer.name} />
-                <p>{engineer.name}</p>
-                <p>{engineer.speciality}</p>
-              </div>
-          ))}
+  if (status === 'succeeded') {
+    if (message === 'No engineers found') {
+      return (
+        <div className="empty-div">
+          <p className="empty-msg">
+            There are no engineers to display.
+          </p>
         </div>
-        {isModalOpen && (
-            <div className="modal" style={{ position: 'absolute', top: 0, left: '50%', transform: 'translateX(-50%)', zIndex: 999 }}>
-              <div className="modal-content d-flex justify-content-start">
-                <div>
-                  <span className="close" onClick={closeModal}>&times;</span>
+      );
+    }
+    if (engineers.length > 0 && Array.isArray(engineers)) {
+      return (
+        <div className="engineers-list">
+          <button
+            type="button"
+            className={`prev carousel-btn ${showIds[0] === engineers.map((engineer) => engineer.id)[0] ? 'disabled' : ''}`}
+            onClick={() => handlePrevClick(showIds)}
+          >
+            {/* eslint-disable jsx-a11y/control-has-associated-label */}
+            <i className="bi bi-caret-left" />
+          </button>
+          {engineers.map((engineer) => {
+            const {
+              name, id, photo, speciality,
+            } = engineer;
+            return (
+              <div
+                key={id}
+                id={id}
+                className={`engineer-card ${
+                  showIds.includes(engineer.id) ? 'active-item' : 'item'
+                }`}
+              >
+                <div className="engineer-img-container">
+                  <img className="engineer-img" src={photo} alt={name} />
                 </div>
-                <h2>{selectedEngineer.name}</h2>
-                <p>{selectedEngineer.speciality}</p>
-                {/* Add more details as needed */}
+                <Link
+                  to={`engineersList/${engineer.id}`}
+                  className="engineer text-black"
+                >
+                  <p>{name}</p>
+                  <p className="text-body-tertiary dotted-top-border">
+                    {speciality}
+                  </p>
+                </Link>
+                {showDeleteButton && (
+                  <button
+                    type="button"
+                    onClick={() => handleDelete(engineer.id)}
+                    className="fw-bolder delete-btn p-2"
+                  >
+                    <span className="fs-5 setting-icon">
+                      <i className="bi bi-trash3-fill" />
+                    </span>
+                    Delete
+                  </button>
+                )}
               </div>
-            </div>
-        )}
-        <button onClick={handleNextClick} disabled={currentIndex + 3 >= engineers.length}>Next</button>
-      </div>
-  );
-
+            );
+          })}
+          <button
+            type="button"
+            className={`next carousel-btn ${
+              showIds[showIds.length - 1] === lastId ? 'disabled' : ''
+            }`}
+            onClick={() => handleNextClick(showIds)}
+          >
+            {/* eslint-disable jsx-a11y/control-has-associated-label */}
+            <i className="bi bi-caret-right" />
+          </button>
+        </div>
+      );
+    }
+  }
 }
 
+// Define propTypes for EngineersList component
+EngineersList.propTypes = {
+  showDeleteButton: PropTypes.bool, // showDeleteButton prop should be a boolean
+};
+
+// Define defaultProps for EngineersList component
+EngineersList.defaultProps = {
+  showDeleteButton: false, // Default value for showDeleteButton prop is false
+};
 export default EngineersList;

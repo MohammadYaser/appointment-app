@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import fetchEngineers from './engineersThunk';
+import { addEngineer, fetchEngineers, deleteEngineer } from './engineersThunk';
 
 const initialState = {
   engineers: [],
@@ -8,20 +8,40 @@ const initialState = {
   message: null,
 };
 
-const isPendingAction = (action) => action.type.endsWith('/pending');
-const isRejectedAction = (action) => action.type.endsWith('/rejected');
+const isPendingAction = (action) => action.type.split('/')[0] === 'engineers' && action.type.endsWith('/pending');
+const isRejectedAction = (action) => action.type.split('/')[0] === 'engineers' && action.type.endsWith('/rejected');
 
 const engineersSlice = createSlice({
   name: 'Engineers',
   initialState,
-  reducers: {},
+  reducers: {
+    EngineersReset: (state) => ({
+      ...state,
+      status: 'idle',
+      error: null,
+      message: null,
+    }),
+  },
   extraReducers(builder) {
     builder
 
       .addCase(fetchEngineers.fulfilled, (state, action) => ({
         ...state,
-        engineers: action.payload,
+        engineers: action.payload.data,
         status: 'succeeded',
+        message: action.payload.message,
+      }))
+      .addCase(addEngineer.fulfilled, (state, action) => ({
+        ...state,
+        engineers: [...state.engineers, action.payload.data],
+        status: 'succeeded',
+        message: action.payload.message,
+      }))
+      .addCase(deleteEngineer.fulfilled, (state, action) => ({
+        ...state,
+        engineers: state.engineers.filter((engineer) => engineer.id !== action.payload.id),
+        status: 'succeeded',
+        message: action.payload.message,
       }))
 
     // for all pending actions that has the same callback functions
@@ -37,5 +57,6 @@ const engineersSlice = createSlice({
 });
 
 export const engineersState = (state) => state.engineers;
-export { fetchEngineers };
+export const { EngineersReset } = engineersSlice.actions;
+export { fetchEngineers, addEngineer, deleteEngineer };
 export default engineersSlice.reducer;

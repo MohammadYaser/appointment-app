@@ -1,31 +1,62 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   BrowserRouter, Routes, Route,
 } from 'react-router-dom';
-// import router from './router';
+import { useDispatch, useSelector } from 'react-redux';
 import Sidebar from './pages/Sidebar';
 import HomePage from './pages/HomePage';
-import AddEngineerForm from './components/AddEngineerForm';
+import AddEngineerPage from './pages/AddEngineerPage';
+import EngineerDetails from './components/EngineerDetails';
+import DeleteEngineer from './pages/DeleteEngineer';
+import Register from './components/auth/register';
+import Login from './components/auth/login';
+import AddReservationPage from './pages/AddReservationPage';
+import MyConsultation from './pages/MyConsultation';
+import { reset } from './redux/auth/authSlice';
 
 function App() {
+  const token = JSON.parse(localStorage.getItem('token'));
+  const [loggedIn, setLoggedIn] = useState(token !== null);
+  const dispatch = useDispatch();
+  const { isSuccess } = useSelector((state) => state.auth);
+
+  useEffect(() => {
+    if (isSuccess && token) {
+      setLoggedIn(true);
+      dispatch(reset());
+    } else if (!token) {
+      setLoggedIn(false);
+    }
+  }, [setLoggedIn, token, isSuccess, dispatch]);
+
   return (
     <BrowserRouter>
-      <div className="d-flex">
-        <div className="col-auto">
-          <Sidebar />
-        </div>
-        <div className="col">
-          <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="consultateEngineer" element={<HomePage />} />
-            <Route path="myConsultation" element={<HomePage />} />
-            <Route path="addEngineer" element={<AddEngineerForm />} />
-            <Route path="deleteEngineer" element={<HomePage />} />
-          </Routes>
+      <Routes>
 
-        </div>
+        <Route path="/" element={<Sidebar />}>
+          {loggedIn && (
+            <>
+              <Route index element={<HomePage />} />
+              <Route path="/engineersList/:engineerId" element={<EngineerDetails />} />
+              <Route path="consultateEngineer/:engineerId" element={<AddReservationPage />} />
+              <Route path="consultateEngineer" element={<AddReservationPage />} />
+              <Route path="myConsultation" element={<MyConsultation />} />
+              <Route path="addEngineer" element={<AddEngineerPage />} />
+              <Route path="deleteEngineer" element={<DeleteEngineer />} />
+              <Route path="/*" element={<HomePage />} />
 
-      </div>
+            </>
+          )}
+          {!loggedIn && (
+            <>
+              <Route index element={<Login />} />
+              <Route path="register" element={<Register />} />
+              <Route path="/*" element={<Login />} />
+            </>
+          )}
+
+        </Route>
+      </Routes>
     </BrowserRouter>
   );
 }

@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-ruby '3.2.3'
+ruby '3.0.2'
 
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
 gem 'rails', '~> 7.1.3'
@@ -52,7 +52,6 @@ group :development, :test do
   gem 'database_cleaner-active_record'
   gem 'debug', platforms: %i[mri mingw x64_mingw windows]
   gem 'factory_bot_rails'
-  gem 'faker'
   gem 'rails-controller-testing'
   gem 'rspec-rails', '>= 3.9.0'
   gem 'shoulda-matchers'
@@ -78,4 +77,8 @@ group :test do
   gem 'webdrivers'
 end
 
+gem 'devise'
+gem 'devise-jwt'
+gem 'faker'
+gem 'jsonapi-serializer'
 gem 'rswag'

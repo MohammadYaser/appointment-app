@@ -3,6 +3,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import authServices from './authService';
 
 const user = JSON.parse(localStorage.getItem('user'));
+const headers = () => ({ headers: { Authorization: JSON.parse(localStorage.getItem('token')) } });
 
 const initialState = {
   user: user || null,
@@ -39,17 +40,11 @@ export const login = createAsyncThunk('auth/login', async (user, thunkAPI) => {
 });
 
 export const logout = createAsyncThunk('auth/logout', async () => {
-  const localuser = JSON.parse(localStorage.getItem('user'));
-  const token = localuser && localuser.Authorization;
-
   try {
-    const response = await axios.delete('http://localhost:4000/users/sign_out', {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    if (response.status === 200) {
+    const response = await axios.delete('/users/sign_out', headers());
+    if (response.status === 204 || response.statusText === 'No Content') {
       localStorage.removeItem('user');
+      localStorage.removeItem('token');
     }
     return null;
   } catch (error) {

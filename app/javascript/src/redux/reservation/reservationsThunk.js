@@ -1,26 +1,11 @@
-import axios from 'axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
+import axios from 'axios';
 
-const EngineersURL = '/api/v1/engineers';
+const EngineersURL = '/api/v1/consultations';
 const headers = () => ({ headers: { Authorization: JSON.parse(localStorage.getItem('token')) } });
 
-const fetchEngineers = createAsyncThunk('engineers/fetchEngineers', async () => {
+const fetchReservations = createAsyncThunk('reservations/fetchReservations', async () => {
   const response = await axios.get(EngineersURL, headers())
-    .then(({ data }) => data)
-    .catch((error) => {
-      if (error.response.status === 401) {
-        // handle token expiration
-        localStorage.removeItem('user');
-        localStorage.removeItem('token');
-        window.location.href = '/';
-      }
-      throw new Error(`HTTP error! Error: ${error}`);
-    });
-  return response;
-});
-
-const addEngineer = createAsyncThunk('engineers/AddEngineer', async (engineer) => {
-  const response = await axios.post(EngineersURL, engineer, headers())
     .then(({ data }) => data).catch((error) => {
       if (error.response.status === 401) {
         // handle token expiration
@@ -33,8 +18,8 @@ const addEngineer = createAsyncThunk('engineers/AddEngineer', async (engineer) =
   return response;
 });
 
-const deleteEngineer = createAsyncThunk('engineers/deleteEngineer', async (engineerId) => {
-  const response = await axios.delete(`${EngineersURL}/${engineerId}`, headers())
+const addReservations = createAsyncThunk('reservations/addReservations', async (reservation) => {
+  const response = await axios.post(EngineersURL, reservation, headers())
     .then(({ data }) => data).catch((error) => {
       if (error.response.status === 401) {
         // handle token expiration
@@ -47,4 +32,4 @@ const deleteEngineer = createAsyncThunk('engineers/deleteEngineer', async (engin
   return response;
 });
 
-export { fetchEngineers, addEngineer, deleteEngineer };
+export { fetchReservations, addReservations };
