@@ -138,8 +138,7 @@ to run tests:
 ## Kanban Board <a name="kanban-board"></a>
 
 - [Project Board](https://github.com/users/MohammadYaser/projects/3/views/1)
-- ![Project Board](![image](https://github.com/MohammadYaser/appointment-app/assets/134836471/07aedaa8-c090-4721-bb31-b686d1ddee5b)
-)
+- ![image](https://github.com/MohammadYaser/appointment-app/assets/134836471/c0e00f4f-b1e4-490c-9e6c-2916a5d3bba2)
 
 - Our team consists of 3 members:
   [@erickma1](https://github.com/erickma1),
