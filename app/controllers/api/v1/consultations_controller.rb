@@ -8,7 +8,13 @@ class Api::V1::ConsultationsController < ApplicationController
       render json: { message: 'No consultations found' }
     else
       consultations_data = @consultations.map do |consultation|
-       
+        {
+          id: consultation.id,
+          user_name: consultation.user&.username,
+          engineer_name: consultation.engineer&.name,
+          city: consultation.city,
+          date: consultation.date
+        }
       end
       render json: { data: consultations_data }
     end
