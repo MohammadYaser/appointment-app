@@ -13,9 +13,8 @@ function App() {
       <div className="d-flex">
         <div className="col-auto">
           <Sidebar />
-
         </div>
-        <div className="col-lg-8">
+        <div className="col">
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="consultateEngineer" element={<HomePage />} />
