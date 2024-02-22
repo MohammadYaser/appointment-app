@@ -12,3 +12,10 @@
   transition: all 0.3s ease;
   color: #fff;
 }
+
+.empty-div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
