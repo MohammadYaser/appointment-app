@@ -183,6 +183,8 @@ GEM
     nio4r (2.7.0)
     nokogiri (1.16.0-arm64-darwin)
       racc (~> 1.4)
+    nokogiri (1.16.0-x64-mingw-ucrt)
+      racc (~> 1.4)
     nokogiri (1.16.0-x64-mingw32)
       racc (~> 1.4)
     nokogiri (1.16.0-x86_64-linux)
@@ -193,6 +195,7 @@ GEM
       ast (~> 2.4.1)
       racc
     pg (1.5.4)
+    pg (1.5.4-x64-mingw-ucrt)
     pg (1.5.4-x64-mingw32)
     psych (5.1.2)
       stringio
@@ -364,6 +367,7 @@ GEM
 
 PLATFORMS
   arm64-darwin-22
+  x64-mingw-ucrt
   x64-mingw32
   x86_64-linux
 
@@ -399,7 +403,7 @@ DEPENDENCIES
   webdrivers
 
 RUBY VERSION
-   ruby 3.0.2p107
+   ruby 3.2.3p157
 
 BUNDLED WITH
    2.5.5
