@@ -87,7 +87,7 @@ In order to run this project you need:
 Clone this repository to your desired folder:
 
 ```bash
-  git clone git@github.com:mohamedSabry0/appointments_app.git
+  git clone https://github.com/MohammadYaser/appointment-app.git
 ```
 
 ### Install
@@ -165,7 +165,7 @@ to run tests:
 
 Contributions, issues, and feature requests are welcome!
 
-Feel free to check the [issues page](https://github.com/mohamedSabry0/appointments_app/issues).
+Feel free to check the [issues page](https://github.com/MohammadYaser/appointment-app/issues).
 You are welcome to fork the repository and modify the code. We encourage pull requests.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
